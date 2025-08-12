@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'util/routes.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -7,35 +7,107 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  void register() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      Navigator.pop(context); // Go back to login
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Register")),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, obscureText: true, decoration: InputDecoration(labelText: "Password")),
-            ElevatedButton(onPressed: register, child: const Text("Register")),
-          ],
-        ),
+    return Material(
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(children: [
+          Image.asset('assets/img/register.png', fit: BoxFit.fill),
+          SizedBox(height: 5),
+          Text(
+            'Register Here',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+            child: Form(
+              key: _formKey, // 🔹 Attach the form key here
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Enter Username',
+                      labelText: 'Username',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Username cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Email',
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Email cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Password',
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password cannot be empty";
+                      }else{
+                        if (value.length <6){
+                          return "password must be at least 6 characters";
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            child: Text("Register"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                // Only navigate if all fields are valid
+                Navigator.pushNamed(context, MyRoutes.notes);
+              }
+            },
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, MyRoutes.login);
+            },
+            child: Text("Already have account? Login",
+                style: TextStyle(color: Colors.blue)),
+          )
+        ]),
       ),
     );
   }

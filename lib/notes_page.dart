@@ -35,7 +35,7 @@ class _NotesPageState extends State<NotesPage> {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => LoginPage()),
+      MaterialPageRoute(builder: (_) => Loginpage()),
     );
   }
 

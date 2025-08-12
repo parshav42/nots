@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';  // To detect platform
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:login/notes_page.dart';
 import 'login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'register_page.dart';
+import 'util/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +45,13 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
       ),
-      home: Loginpage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Loginpage(),
+        MyRoutes.notes: (context) => NotesPage(),
+         MyRoutes.register: (context) => RegisterPage(),
+      }
+     
     );
   }
 }
