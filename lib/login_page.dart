@@ -1,53 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'notes_page.dart';
-import 'register_page.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
 
-class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
-  void login() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NotesPage()),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, obscureText: true, decoration: InputDecoration(labelText: "Password")),
-            ElevatedButton(onPressed: login, child: const Text("Login")),
-            TextButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterPage()));
-              },
-              child: const Text("Register"),
-            )
-          ],
+class Loginpage extends StatelessWidget{
+@override 
+Widget build(BuildContext context){
+return Material(
+  color: Colors.white,
+  child:SingleChildScrollView(
+    child: Column(
+    
+      children:[
+      Image.asset('assets/img/login.png' ,fit: BoxFit.cover,),
+      SizedBox(height: 20,),
+      Text('Welcome',
+      style: TextStyle( fontSize: 24,fontWeight: FontWeight.bold),) 
+      ,SizedBox(height: 20,), 
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 32.0),
+        child: Column( 
+          children: [TextFormField(
+          decoration: InputDecoration(
+            hintText: 'Enter Username',
+            labelText: 'Username',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          ),
+          
+        
         ),
-      ),
-    );
-  }
+        SizedBox(height: 20,),
+        TextFormField(
+          obscureText: true ,
+          decoration: InputDecoration(
+            hintText: 'Enter Password',
+            labelText: 'Password',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          ),
+        )],
+        ),
+      )
+      ,SizedBox(height: 20,),
+      ElevatedButton(
+        child: Text("Login"),
+        style: TextButton.styleFrom(minimumSize: Size(150, 40)),
+        onPressed: () {
+          print("Login button pressed");
+        }
+      )
+      ] 
+      
+    ),
+  )
+);  
+}
 }
