@@ -5,18 +5,21 @@ import 'util/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'auth_service.dart';
 
 
 
 class Loginpage extends StatefulWidget{
+    const Loginpage({Key? key}) : super(key: key);
   
   @override
   State<Loginpage> createState() => _LoginpageState();
 }
 
 class _LoginpageState extends State<Loginpage> {
-   final _formKey = GlobalKey<FormState>();
-  String name="";
+   
+  final TextEditingController _emailcontroller=TextEditingController();
+  final TextEditingController _passwordcontroller=TextEditingController();
   String email = "";
   String password = "";
 @override 
@@ -30,19 +33,19 @@ return Scaffold(
         children:[
         Image.asset('assets/img/login.png' ,fit: BoxFit.fill,),
         SizedBox(height: 5,),
-        Text('Welcome $name',
+        Text('Welcome Back',
         style: TextStyle( fontSize: 24,fontWeight: FontWeight.bold),) 
         ,SizedBox(height: 20,), 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0,horizontal: 32.0),
           child: Form(
-            key: _formKey, // 🔹 Attach the form key here
+          
             child: Column( 
               children: [
             SizedBox(height: 20,),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
-             
+              controller: _emailcontroller,
               decoration: InputDecoration(
                 hintText: 'Enter Email',
                 labelText: 'Email ',
@@ -66,6 +69,7 @@ return Scaffold(
             SizedBox(height: 20,),
             TextFormField(
               obscureText: true ,
+              controller: _passwordcontroller,
               decoration: InputDecoration(
                 hintText: 'Enter Password',
                 labelText: 'Password',
@@ -96,53 +100,38 @@ return Scaffold(
           
           
           onPressed: () async{
-            if(_formKey.currentState!.validate()){
-              try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: email, // Replace with the actual email input
-                  password: password,
-                );Navigator.pushNamed(context, MyRoutes.notes);
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("No user found with this email")),
-      );
-    } else if (e.code == 'wrong-password') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Incorrect password")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.message}")),
-      );
-    }
-              } catch (e) {
-                print("Error initializing Firebase: $e");
-              }
-              name = "User"; // You can replace this with actual user data after login
-              // Perform login action
-              // For example, you can navigate to another page or show a success message
+            final message = await Auth().login(
+              email: _emailcontroller.text,
+              password: _passwordcontroller.text,
+            );
+            if (message == 'Success') {
               Navigator.pushNamed(context, MyRoutes.notes);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message ?? 'Login failed'))
+              );
             }
-  
-            if (_formKey.currentState!.validate()){
-           Navigator.pushNamed(context, MyRoutes.notes);
-            }
+
           }
         ),
-        
-        TextButton(
+TextButton(
           onPressed: () {
             Navigator.pushNamed(context, MyRoutes.register);
           },
           child: Text("New User? Register here", style: TextStyle(color: Colors.blue)),
         )
-        ]
         
+        
+        ],
       ),
-    )
-  );
-  
-  
-  } 
+    ),
+);
 }
+
+}
+
+         
+
+  
+    
+  

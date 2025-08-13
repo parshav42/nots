@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'util/routes.dart';
+import 'auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
+
+   const RegisterPage({Key? key}) : super(key: key);
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
+  // final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +32,11 @@ class _RegisterPageState extends State<RegisterPage> {
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
             child: Form(
-              key: _formKey, // 🔹 Attach the form key here
+             
               child: Column(
                 children: [
                   TextFormField(
+                    // controller: _usernameController,
                     decoration: InputDecoration(
                       hintText: 'Enter Username',
                       labelText: 'Username',
@@ -46,6 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       hintText: 'Enter Email',
@@ -57,12 +65,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Email cannot be empty";
-                      }
-                      return null;
+                      }if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+                    return "Enter a valid email address";
+                      } return null;
                     },
                   ),
                   SizedBox(height: 20),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Enter Password',
@@ -93,12 +103,22 @@ class _RegisterPageState extends State<RegisterPage> {
               backgroundColor: Colors.deepPurple,
               foregroundColor: Colors.white,
             ),
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                // Only navigate if all fields are valid
-                Navigator.pushNamed(context, MyRoutes.notes);
+            onPressed: () async{
+             final message = await Auth().registration(
+                email: _emailController.text,
+                password: _passwordController.text,
+               
+              );
+              if (message == 'Success') {
+                 Navigator.pushNamed(context, MyRoutes.notes);
+              } else{
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(message ?? 'Registration failed')),
+              );
+              
               }
             },
+            
           ),
           TextButton(
             onPressed: () {
