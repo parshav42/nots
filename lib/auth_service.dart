@@ -6,7 +6,7 @@ class Auth
    Future<String ?> registration({
       required String email,
       required String password,
-      // required String username,
+       required String username,
     })async {
     try {
         await _auth.createUserWithEmailAndPassword(
@@ -16,9 +16,9 @@ class Auth
         return 'Success';
       } 
       on FirebaseAuthException catch (e) {
-        if (e.code == 'EMAIL_EXISTS') {
+        if (e.code == 'weak-password') {
           return 'The password provided is too weak.';
-        } else if (e.code == 'EMAIL_EXISTS') {
+        } else if (e.code == 'email-already-in-useS') {
           return 'The account already exists for that email.';
         } else {
           return e.message;

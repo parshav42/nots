@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'util/routes.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
+
 
 
 
@@ -44,8 +46,10 @@ return Scaffold(
               children: [
             SizedBox(height: 20,),
             TextFormField(
+         
               keyboardType: TextInputType.emailAddress,
               controller: _emailcontroller,
+              
               decoration: InputDecoration(
                 hintText: 'Enter Email',
                 labelText: 'Email ',
@@ -53,17 +57,7 @@ return Scaffold(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Email cannot be empty";
-                }
-                else {
-                  if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-                    return "Enter a valid email address";
-                  }
-                }
-                return null;
-              },
+             
             ),
             
             SizedBox(height: 20,),
@@ -77,16 +71,7 @@ return Scaffold(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Password cannot be empty";
-                } else {
-                  if (value.length < 6) {
-                    return "Password must be at least 6 characters";
-                  }
-                }
-                return null;
-              },
+              
             )],
             ),
           ),

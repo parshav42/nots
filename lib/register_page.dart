@@ -10,7 +10,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
  
@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    // controller: _usernameController,
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       hintText: 'Enter Username',
                       labelText: 'Username',
@@ -44,12 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Username cannot be empty";
-                      }
-                      return null;
-                    },
+                   
                   ),
                   SizedBox(height: 20),
                   TextFormField(
@@ -81,16 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Password cannot be empty";
-                      }else{
-                        if (value.length <6){
-                          return "password must be at least 6 characters";
-                        }
-                      }
-                      return null;
-                    },
+                   
                   ),
                 ],
               ),
@@ -107,6 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
              final message = await Auth().registration(
                 email: _emailController.text,
                 password: _passwordController.text,
+                username: _usernameController.text,
                
               );
               if (message == 'Success') {
