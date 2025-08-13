@@ -22,7 +22,7 @@ class _LoginpageState extends State<Loginpage> {
    
   final TextEditingController _emailcontroller=TextEditingController();
   final TextEditingController _passwordcontroller=TextEditingController();
-  String email = "";
+  String email = "parshav@gmail.com";
   String password = "";
 @override 
 Widget build(BuildContext context){
