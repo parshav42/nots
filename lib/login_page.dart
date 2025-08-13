@@ -99,12 +99,17 @@ return Scaffold(
 
           }
         ),
-TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, MyRoutes.register);
-          },
-          child: Text("New User? Register here", style: TextStyle(color: Colors.blue)),
-        )
+Row(
+  children: [
+    TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, MyRoutes.register);
+              },
+              child: Text("New User?", style: TextStyle(color: Colors.black)),
+              child: Text(" Register here", style: TextStyle(color: Colors.blue),
+            ),
+  ],
+)
         
         
         ],
