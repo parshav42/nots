@@ -15,6 +15,7 @@ class _NotesPageState extends State<NotesPage> {
 final _noteController = TextEditingController();
 final _auth = FirebaseAuth.instance;
 
+
 @override
 void initState() {
   super.initState();
@@ -59,83 +60,97 @@ Future<void> _logout() async {
   Navigator.pushReplacementNamed(context, '${MyRoutes.login}');
 }
   @override
-  Widget build(BuildContext context) {               
-    return Scaffold(                                  
-      appBar: AppBar(                               
-        title: const Text("My Notes"),               
-        actions: [                                    
-          IconButton(                                
-            icon: const Icon(Icons.logout),           
-            onPressed: _logout),                       
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("My Notes"),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: _logout,
+        ),
+      ],
+    ),
 
-        ],
-      ),
-      body: Column(                                    
-        children: [                                    
-          // Add note
-          Padding(                                    
-            padding: const EdgeInsets.all(8.0),       
-            child: Row(                               
-              children: [
-                Expanded(                             
-                  child: TextField(                   
-                    controller: _noteController,      
-                    decoration: const InputDecoration( 
-                      labelText: "Write a note...",    
-                      border: OutlineInputBorder(),    
-                    ),
-                  ),
+    // Floating + button
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Add Note"),
+              content: TextField(
+                controller: _noteController,
+                decoration: const InputDecoration(
+                  hintText: "Write a note...",
                 ),
-                const SizedBox(width: 8),             
-                ElevatedButton(                         
-                  onPressed: _addNote,                 
-                  child: const Text("Add"),            
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // close dialog
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _addNote();
+                    Navigator.pop(context); // close dialog
+                  },
+                  child: const Text("Add"),
                 ),
               ],
-            ),
-          ),
+            );
+          },
+        );
+      },
+      child: const Icon(Icons.add),
+    ),
 
-          // Notes list
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: notesCollection
-                  .orderBy('createdAt', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text("Something went wrong"));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) { 
-                  return const Center(child: CircularProgressIndicator()); 
-                }
+    body: Column(
+      children: [
+        // Notes list
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: notesCollection
+                .orderBy('createdAt', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text("Something went wrong"));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                final notes = snapshot.data!.docs;
+              final notes = snapshot.data!.docs;
 
-                if (notes.isEmpty) {                   
-                  return const Center(child: Text("No notes yet")); 
-                }
+              if (notes.isEmpty) {
+                return const Center(child: Text("No notes yet"));
+              }
 
-                return ListView.builder(                
-                  itemCount: notes.length,            
-                  itemBuilder: (context, index) {      
-                    final note = notes[index];          
-                    final noteText = note['text'] ?? '';
-                    return Card(                       
-                      child: ListTile(                  
-                        title: Text(noteText),          
-                        trailing: IconButton(          
-                          icon: const Icon(Icons.delete, color: Colors.red), 
-                          onPressed: () => _deleteNote(note.id), 
-                        ),
+              return ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  final noteText = note['text'] ?? '';
+                  return Card(
+                    child: ListTile(
+                      title: Text(noteText),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteNote(note.id),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 }
