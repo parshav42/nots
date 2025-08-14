@@ -20,9 +20,9 @@ class Loginpage extends StatefulWidget{
 
 class _LoginpageState extends State<Loginpage> {
    
-  final TextEditingController _emailcontroller=TextEditingController(text: 'parshav@gmaul.com');
-  final TextEditingController _passwordcontroller=TextEditingController();
-  String email = "parshav@gmail.com";
+  final TextEditingController _emailcontroller=TextEditingController(text: 'parshav@gmail.com');
+  final TextEditingController _passwordcontroller=TextEditingController(text: 'parshav');
+  String email = "";
   String password = "";
 @override 
 Widget build(BuildContext context){
@@ -100,27 +100,35 @@ return Scaffold(
           }
         ),
 Row(
+  mainAxisAlignment: MainAxisAlignment.center,
   children: [
     TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, MyRoutes.register);
-              },
-              child: Text("New User?", style: TextStyle(color: Colors.black)),
-              child: Text(" Register here", style: TextStyle(color: Colors.blue),
+      onPressed: () {
+        Navigator.pushNamed(context, MyRoutes.register);
+      },
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "New User? ",
+              style: TextStyle(color: Colors.black),
             ),
+            TextSpan(
+              text: "Register here",
+              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    ),
   ],
 )
-        
-        
         ],
       ),
     ),
-);
+  );
 }
-
-}
-
-         
+} 
 
   
     
