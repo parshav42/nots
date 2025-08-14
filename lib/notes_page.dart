@@ -89,14 +89,14 @@ Widget build(BuildContext context) {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context); // close dialog
+                    Navigator.pop(context); 
                   },
                   child: const Text("Cancel"),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     _addNote();
-                    Navigator.pop(context); // close dialog
+                    Navigator.pop(context);
                   },
                   child: const Text("Add"),
                 ),
@@ -110,7 +110,7 @@ Widget build(BuildContext context) {
 
     body: Column(
       children: [
-        // Notes list
+       
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
             stream: notesCollection
