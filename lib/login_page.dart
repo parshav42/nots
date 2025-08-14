@@ -20,8 +20,8 @@ class Loginpage extends StatefulWidget{
 
 class _LoginpageState extends State<Loginpage> {
    
-  final TextEditingController _emailcontroller=TextEditingController(text: 'parshav@gmail.com');
-  final TextEditingController _passwordcontroller=TextEditingController(text: 'parshav');
+  final TextEditingController _emailcontroller=TextEditingController();
+  final TextEditingController _passwordcontroller=TextEditingController();
   String email = "";
   String password = "";
 @override 
