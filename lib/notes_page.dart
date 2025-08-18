@@ -1,4 +1,3 @@
-import 'auth_service.dart';
 import 'package:flutter/material.dart'; 
 import 'util/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class NotesPage extends StatefulWidget {
-  const NotesPage({Key? key}) : super(key: key);
+  const NotesPage({super.key});
 
   @override
   State<NotesPage> createState() => _NotesPageState();
@@ -57,7 +56,7 @@ Future<void> _deleteNote(String noteId) async {
 }
 Future<void> _logout() async {
   await _auth.signOut();
-  Navigator.pushReplacementNamed(context, '${MyRoutes.login}');
+  Navigator.pushReplacementNamed(context, MyRoutes.login);
 }
   @override
 Widget build(BuildContext context) {

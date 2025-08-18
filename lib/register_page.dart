@@ -4,7 +4,7 @@ import 'auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
 
-   const RegisterPage({Key? key}) : super(key: key);
+   const RegisterPage({super.key});
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -84,7 +84,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            child: Text("Register"),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.deepPurple,
               foregroundColor: Colors.white,
@@ -105,6 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
               
               }
             },
+            child: Text("Register"),
             
           ),
           TextButton(

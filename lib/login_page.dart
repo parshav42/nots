@@ -1,18 +1,14 @@
-import 'dart:math';
-import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'util/routes.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 
 
 
 
 class Loginpage extends StatefulWidget{
-    const Loginpage({Key? key}) : super(key: key);
+    const Loginpage({super.key});
   
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -78,8 +74,6 @@ return Scaffold(
         )
         ,SizedBox(height: 20,),
         ElevatedButton(
-          child: Text("Login"
-          ,),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,),
           
@@ -97,7 +91,9 @@ return Scaffold(
               );
             }
 
-          }
+          },
+          child: Text("Login"
+          ,)
         ),
 Row(
   mainAxisAlignment: MainAxisAlignment.center,
